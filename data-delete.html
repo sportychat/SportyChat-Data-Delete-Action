@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delete Your Data — SportyChat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-main:    #0D0D14;
+      --bg-card:    #13131E;
+      --bg-elevated:#1C1C2A;
+      --text-on:    #F0F0F8;
+      --text-dim:   #C4C4D4;
+      --text-muted: #8080A0;
+      --text-ghost: #505068;
+      --accent:     #3B82F6;
+      --red:        #EF4444;
+      --red-soft:   rgba(239,68,68,0.10);
+      --green:      #10B981;
+      --green-soft: rgba(16,185,129,0.10);
+      --amber:      #F59E0B;
+      --amber-soft: rgba(245,158,11,0.10);
+      --line:       #252535;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-dim);
+      line-height: 1.65;
+      font-size: 14px;
+      min-height: 100vh;
+      padding: 0 16px;
+    }
+
+    .page {
+      max-width: 672px;
+      margin: 0 auto;
+      padding: 48px 0 80px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .brand-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3B82F6, #A855F7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(59,130,246,0.35);
+    }
+    .brand-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-on);
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-on);
+      letter-spacing: -0.5px;
+    }
+    .page-meta {
+      font-size: 13px;
+      color: var(--text-ghost);
+      margin-top: 4px;
+      margin-bottom: 32px;
+    }
+
+    /* Warning banner */
+    .warning-banner {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      background: var(--red-soft);
+      border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 12px;
+      margin-bottom: 32px;
+    }
+    .warning-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .warning-text {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .warning-text strong { color: var(--red); }
+
+    .sections { display: flex; flex-direction: column; gap: 28px; }
+
+    /* Method cards */
+    .method-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .method-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .method-badge {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .badge-green { background: var(--green-soft); }
+    .badge-amber { background: var(--amber-soft); }
+    .badge-red   { background: var(--red-soft); }
+
+    .method-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-on);
+    }
+    .method-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+    .method-body { padding: 16px; }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .step-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-text { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+    .step-text strong { color: var(--text-on); font-weight: 600; }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-on);
+      margin-bottom: 12px;
+    }
+
+    /* Retention table */
+    .retention-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .retention-table th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--line);
+    }
+    .retention-table td {
+      padding: 10px 14px;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .retention-table tr:last-child td { border-bottom: none; }
+    .retention-table td:first-child { color: var(--text-on); font-weight: 500; }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .tag-red    { background: var(--red-soft);   color: var(--red); }
+    .tag-amber  { background: var(--amber-soft);  color: var(--amber); }
+    .tag-green  { background: var(--green-soft);  color: var(--green); }
+
+    /* Contact card */
+    .contact-card {
+      padding: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .contact-row { display: flex; gap: 8px; align-items: center; }
+    .contact-label { color: var(--text-muted); min-width: 56px; }
+    .accent-link { color: var(--accent); text-decoration: none; }
+    .accent-link:hover { text-decoration: underline; }
+
+    p { color: var(--text-dim); }
+
+    @media (max-width: 480px) {
+      .page { padding: 32px 0 60px; }
+      .page-title { font-size: 20px; }
+      .retention-table th,
+      .retention-table td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="brand">
+    <div class="brand-icon">S</div>
+    <span class="brand-name">SportyChat</span>
+  </div>
+
+  <h1 class="page-title">Delete Your Data</h1>
+  <p class="page-meta">Account &amp; data deletion request &mdash; SportyChat</p>
+
+  <div class="warning-banner">
+    <span class="warning-icon">⚠️</span>
+    <p class="warning-text"><strong>Account deletion is permanent and irreversible.</strong> Once deleted, your profile, communities, posts, and match history cannot be recovered.</p>
+  </div>
+
+  <div class="sections">
+
+    <!-- Method 1: In-app -->
+    <div>
+      <h2 class="section-title">Option 1 — Delete from the app</h2>
+      <div class="method-card">
+        <div class="method-header">
+          <div class="method-badge badge-green">📱</div>
+          <div>
+            <div class="method-title">In-App Account Deletion</div>
+            <div class="method-subtitle">Instant &mdash; available in Profile &rarr; Settings</div>
+          </div>
+        </div>
+        <div class="method-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-text">Open the SportyChat app and sign in to your account.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-text">Tap your <strong>Profile</strong> tab at the bottom of the screen.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-text">Tap the <strong>Settings</strong> icon (top right).</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-text">Scroll to <strong>Privacy</strong> &rarr; tap <strong>Delete Account</strong>.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-text">Confirm deletion. Your account will be anonymized within <strong>30 days</strong>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Method 2: Email -->
+    <div>
+      <h2 class="section-title">Option 2 — Request via email</h2>
+      <div class="method-card">
+        <div class="method-header">
+          <div class="method-badge badge-amber">✉️</div>
+          <div>
+            <div class="method-title">Email Deletion Request</div>
+            <div class="method-subtitle">Processed within 30 days</div>
+          </div>
+        </div>
+        <div class="method-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-text">Send an email to <a class="accent-link" href="mailto:sportychatofficialapp@gmail.com">sportychatofficialapp@gmail.com</a>.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-text">Use subject line: <strong>"Account Deletion Request — [your email]"</strong></div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-text">Include your registered email address or username so we can locate your account.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-text">We will confirm deletion within <strong>30 days</strong> and send a confirmation email.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What gets deleted -->
+    <div>
+      <h2 class="section-title">What gets deleted &amp; what is retained</h2>
+      <table class="retention-table">
+        <thead>
+          <tr>
+            <th>Data type</th>
+            <th>Action</th>
+            <th>Timeline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Name, email, username, photo</td>
+            <td>Anonymized / cleared</td>
+            <td><span class="tag tag-amber">30 days</span></td>
+          </tr>
+          <tr>
+            <td>AI embeddings &amp; personalization</td>
+            <td>Permanently deleted</td>
+            <td><span class="tag tag-green">7 days</span></td>
+          </tr>
+          <tr>
+            <td>Posts &amp; match records</td>
+            <td>Anonymized (author removed)</td>
+            <td><span class="tag tag-amber">30 days</span></td>
+          </tr>
+          <tr>
+            <td>Chat messages</td>
+            <td>Deleted from chat history</td>
+            <td><span class="tag tag-amber">30 days</span></td>
+          </tr>
+          <tr>
+            <td>Server &amp; security logs</td>
+            <td>Retained for security auditing</td>
+            <td><span class="tag tag-red">90 days</span></td>
+          </tr>
+          <tr>
+            <td>Location data</td>
+            <td>Permanently deleted</td>
+            <td><span class="tag tag-green">7 days</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Contact -->
+    <div>
+      <h2 class="section-title">Contact us</h2>
+      <div class="contact-card">
+        <div class="contact-row">
+          <span class="contact-label">Email:</span>
+          <a class="accent-link" href="mailto:sportychatofficialapp@gmail.com">sportychatofficialapp@gmail.com</a>
+        </div>
+        <div class="contact-row">
+          <span class="contact-label">Website:</span>
+          <span style="color:var(--text-on)">sportychat.app</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-label">Response:</span>
+          <span>Within 30 days of receiving your request</span>
+        </div>
+      </div>
+      <p style="margin-top:14px;font-size:13px;">You also have the right to lodge a complaint with your local data protection authority if you believe your deletion request has not been handled correctly.</p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
